@@ -20,3 +20,7 @@ func ProductsController(app fiber.Router, db *gorm.DB){
 	})
 
 }
+
+
+
+  
