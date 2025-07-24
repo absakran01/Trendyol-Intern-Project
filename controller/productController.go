@@ -17,7 +17,7 @@ func ProductsController(app fiber.Router, db *gorm.DB){
 			return c.Status(fiber.StatusInternalServerError).SendString("Error fetching products")
 		}
 		return c.JSON(products)
-	})
+	}) 
 
 }
 
