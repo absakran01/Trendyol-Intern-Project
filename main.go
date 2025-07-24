@@ -1,14 +1,19 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"strings"
+
 	"example.com/controller"
 	"example.com/util"
 	"github.com/IBM/sarama"
+	"github.com/elastic/go-elasticsearch/v9"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -19,6 +24,25 @@ func main() {
 		log.Fatal("Database connection failed:", err)
 	}
 	log.Println("Database connection established:", db.Name())
+
+	//connect to elasticsearch
+	esClient, err := elasticsearch.NewClient(elasticsearch.Config{
+		Addresses: []string{"http://localhost:9200"},
+	})
+	if err != nil {
+		log.Fatal("Elasticsearch connection failed:", err)
+	}
+	log.Println("Elasticsearch connection established: ", esClient)
+	esClient.Indices.Create("products", esClient.Indices.Create.WithBody(
+		strings.NewReader(`{
+			"mappings": {
+				"properties": {
+					"id": { "type": "keyword" },
+					"name": { "type": "text" }
+				}
+			}
+		}`),
+	))
 
 	// kafka topic
 	topic := "postgres.public.products"
@@ -52,7 +76,17 @@ func main() {
 					if product.Name == "" {
 						log.Println("Received empty product name, skipping...")
 					} else {
-						log.Printf("update detected for product: %s\n", product.Name) 
+						log.Printf("update detected for product: %s\n", product.Name)
+
+						document := struct {
+							ID string `json:"id"`
+							Name string `json:"name"`
+						}{
+							product.ID,
+							product.Name,
+						}
+						data, _ := json.Marshal(document)
+						esClient.Index("products", bytes.NewReader(data))
 					}
 				}
 			case <-sigChan:

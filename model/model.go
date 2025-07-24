@@ -59,6 +59,8 @@
 package model
 
 
+
+
 type Product struct {
 	Timestamp          string `json:"timestamp"`
 	Title              string `json:"title"`
@@ -166,6 +168,6 @@ type TrendyolProduct struct {
 	Category    string `json:"category"`
 	Brand       string `json:"brand"`
 	Images      []string `json:"images"`
-	Variants    []string `json:"variants"`//list model
+	Variants    []string `json:"variants"`//list model, double linked list?
 	Ratings     string `json:"ratings"`
 }
