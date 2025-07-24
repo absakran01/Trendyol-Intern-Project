@@ -166,6 +166,6 @@ type TrendyolProduct struct {
 	Category    string `json:"category"`
 	Brand       string `json:"brand"`
 	Images      []string `json:"images"`
-	Variants    []string `json:"variants"`
+	Variants    []string `json:"variants"`//list model
 	Ratings     string `json:"ratings"`
 }

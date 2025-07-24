@@ -3,3 +3,4 @@
 /docker/pgdata
 docker/docker-entrypoint-initdb.d/.DS_Store
 docker/.DS_Store
+/docker/services/pgdata

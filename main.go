@@ -52,7 +52,7 @@ func main() {
 					if product.Name == "" {
 						log.Println("Received empty product name, skipping...")
 					} else {
-						log.Printf("update detected for product: %s\n", product.Name)
+						log.Printf("update detected for product: %s\n", product.Name) 
 					}
 				}
 			case <-sigChan:

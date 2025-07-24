@@ -8,6 +8,13 @@ services:
       DYNAMIC_CONFIG_ENABLED: 'true'
     volumes:
       - ~/kui/config.yml:/dynamic_config.yaml
+  elasticsearch-ui:
+    container_name: elasticsearch-ui
+    image: appbaseio/dejavu
+    ports:
+      - 1358:1358
+    environment:
+      ELASTICSEARCH_HOST: elasticsearch:9200
 networks:
   default:
     external:
