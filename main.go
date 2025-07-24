@@ -1,14 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"example.com/controller"
-	"example.com/model"
+	"example.com/util"
 	"github.com/IBM/sarama"
 	"github.com/gofiber/fiber/v2"
 )
@@ -49,11 +48,11 @@ func main() {
 				log.Println(err)
 			case msg := <-partConsumer.Messages():
 				{
-					product := toProduct(msg.Value)
-					if product.Title == "" {
-						log.Println("Received empty product title")
+					product := util.ToTrendyolProduct(msg.Value)
+					if product.Name == "" {
+						log.Println("Received empty product name, skipping...")
 					} else {
-						log.Printf("update detected for product: %s\n", product.Title)
+						log.Printf("update detected for product: %s\n", product.Name)
 					}
 				}
 			case <-sigChan:
@@ -86,26 +85,4 @@ func main() {
 
 	log.Println("Listening on port 3000...")
 	app.Listen(":3000")
-}
-
-func toProduct(value []byte) model.Product {
-	var envelope struct {
-		Payload struct {
-			After json.RawMessage `json:"after"`
-		} `json:"payload"`
-	}
-	if err := json.Unmarshal(value, &envelope); err != nil {
-		log.Println("Error unmarshalling envelope:", err)
-		return model.Product{}
-	}
-	var product model.Product
-	if len(envelope.Payload.After) == 0 || string(envelope.Payload.After) == "null" {
-		log.Println("No 'after' data in payload")
-		return model.Product{}
-	}
-	if err := json.Unmarshal(envelope.Payload.After, &product); err != nil {
-		log.Println("Error unmarshalling product:", err)
-		return model.Product{}
-	}
-	return product
 }

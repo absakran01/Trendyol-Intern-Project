@@ -1,5 +1,6 @@
-    /**  Product csv columns
-	timestamp TEXT,
+/*
+  - Product csv columns
+    timestamp TEXT,
     title TEXT,
     seller_name TEXT,
     brand TEXT,
@@ -53,8 +54,10 @@
     images TEXT,
     product_details TEXT,
     prices_breakdown TEXT,
-    country_of_origin TEXT **/
+    country_of_origin TEXT *
+*/
 package model
+
 
 type Product struct {
 	Timestamp          string `json:"timestamp"`
@@ -112,4 +115,57 @@ type Product struct {
 	ProductDetails     string `json:"product_details"`
 	PricesBreakdown    string `json:"prices_breakdown"`
 	CountryOfOrigin    string `json:"country_of_origin"`
+}
+
+/**
+{
+  "id": "12345",
+  "name": "Wireless Bluetooth Headphones",
+  "description": "Over-ear noise-cancelling Bluetooth headphones with 30 hours of battery life.",
+  "price": 89.99,
+  "currency": "USD",
+  "stock": 150,
+  "category": "electronics",
+  "brand": "SoundPro",
+  "images": [
+    {
+      "url": "https://example.com/images/headphones1.jpg",
+      "alt": "Wireless Bluetooth Headphones - Front View"
+    },
+    {
+      "url": "https://example.com/images/headphones2.jpg",
+      "alt": "Wireless Bluetooth Headphones - Side View"
+    }
+  ],
+  "variants": [
+    {
+      "color": "Black",
+      "sku": "12345-BLK",
+      "stock": 100
+    },
+    {
+      "color": "White",
+      "sku": "12345-WHT",
+      "stock": 50
+    }
+  ],
+  "ratings": {
+    "average": 4.5,
+    "count": 324
+  }
+}
+**/
+
+type TrendyolProduct struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Price       float64 `json:"price"`
+	Currency    string `json:"currency"`
+	Stock       string    `json:"stock"`
+	Category    string `json:"category"`
+	Brand       string `json:"brand"`
+	Images      []string `json:"images"`
+	Variants    []string `json:"variants"`
+	Ratings     string `json:"ratings"`
 }
